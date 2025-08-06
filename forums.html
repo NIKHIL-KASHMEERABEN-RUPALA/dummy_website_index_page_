@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devantra Community - Forums</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a2a44, #d4a017, #2a9d8f);
+            color: #f8f1e9;
+            overflow-x: hidden;
+            margin: 0;
+        }
+        .header-section {
+            background: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31') no-repeat center/cover;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+        }
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 42, 68, 0.7);
+            z-index: 1;
+        }
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        .header-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            text-shadow: 0 0 20px rgba(212, 160, 23, 0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        .forums-section {
+            padding: 60px 0;
+            background: rgba(26, 42, 68, 0.8);
+        }
+        .forum-card {
+            background: rgba(248, 241, 233, 0.1);
+            border: 1px solid #d4a017;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.5s, box-shadow 0.5s;
+            backdrop-filter: blur(10px);
+        }
+        .forum-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(212, 160, 23, 0.4);
+        }
+        .btn-custom {
+            background: linear-gradient(45deg, #d4a017, #f8f1e9);
+            color: #1a2a44;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-custom:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(212, 160, 23, 0.5);
+        }
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .search-bar input {
+            background: rgba(248, 241, 233, 0.2);
+            color: #f8f1e9;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+        }
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #d4a017, 0 0 20px #d4a017; }
+            to { text-shadow: 0 0 20px #d4a017, 0 0 30px #d4a017; }
+        }
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <section class="header-section">
+        <div class="header-content">
+            <h1>Community Forums</h1>
+            <p>Connect, Discuss, and Share Ideas</p>
+        </div>
+    </section>
+
+    <!-- Forums Section -->
+    <section class="forums-section">
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" class="form-control" placeholder="Search discussions..." id="searchInput">
+            </div>
+            <div class="category-filter">
+                <button class="btn btn-custom" onclick="filterCategory('all')">All</button>
+                <button class="btn btn-custom" onclick="filterCategory('culture')">Culture</button>
+                <button class="btn btn-custom" onclick="filterCategory('tech')">Tech</button>
+                <button class="btn btn-custom" onclick="filterCategory('events')">Events</button>
+            </div>
+            <div id="forumList">
+                <div class="forum-card">
+                    <h3>Mohali Cultural Fest 2025</h3>
+                    <p>Discuss plans and ideas for the upcoming festival!</p>
+                    <div>Upvotes: <span id="upvote1">12</span> <button class="btn btn-custom btn-sm" onclick="upvote(1)">Upvote</button></div>
+                </div>
+                <div class="forum-card">
+                    <h3>Tech Innovations in Mohali</h3>
+                    <p>Share your thoughts on the local tech scene.</p>
+                    <div>Upvotes: <span id="upvote2">8</span> <button class="btn btn-custom btn-sm" onclick="upvote(2)">Upvote</button></div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <h4>Create a New Thread</h4>
+                <textarea class="form-control" id="newPost" placeholder="Write your post..." style="background: rgba(248, 241, 233, 0.2); color: #f8f1e9;"></textarea>
+                <button class="btn btn-custom mt-2" onclick="createPost()">Post</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function upvote(id) {
+            const upvoteSpan = document.getElementById(`upvote${id}`);
+            upvoteSpan.textContent = parseInt(upvoteSpan.textContent) + 1;
+        }
+
+        function createPost() {
+            const newPost = document.getElementById('newPost');
+            if (newPost.value.trim()) {
+                const forumList = document.getElementById('forumList');
+                const post = document.createElement('div');
+                post.className = 'forum-card';
+                post.innerHTML = `
+                    <h3>${newPost.value.substring(0, 50)}...</h3>
+                    <p>${newPost.value}</p>
+                    <div>Upvotes: <span id="upvote${Date.now()}">0</span> <button class="btn btn-custom btn-sm" onclick="upvote(${Date.now()})">Upvote</button></div>
+                `;
+                forumList.prepend(post);
+                newPost.value = '';
+            }
+        }
+
+        function filterCategory(category) {
+            // Placeholder for category filtering logic
+            alert(`Filtering by ${category}`);
+        }
+
+        // AI-Powered Thread Suggestions
+        setInterval(() => {
+            const suggestions = ['Start a thread on Mohali’s tech startups!', 'Discuss cultural events!', 'Share your festival ideas!'];
+            const forumList = document.getElementById('forumList');
+            const suggestion = document.createElement('div');
+            suggestion.className = 'forum-card';
+            suggestion.innerHTML = `<p style="color: #d4a017;">AI Suggestion: ${suggestions[Math.floor(Math.random() * suggestions.length)]}</p>`;
+            forumList.appendChild(suggestion);
+        }, 20000);
+    </script>
+</body>
+</html>
