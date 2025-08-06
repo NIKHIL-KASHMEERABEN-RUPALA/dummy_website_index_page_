@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devantra Community - Mohali</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a2a44, #d4a017, #2a9d8f);
+            color: #f8f1e9;
+            overflow-x: hidden;
+            margin: 0;
+        }
+        .hero-section {
+            background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c') no-repeat center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 42, 68, 0.7);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(212, 160, 23, 0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        .hero-content p {
+            font-size: 1.8rem;
+            margin: 20px 0;
+            animation: slideUp 2s ease-in-out;
+        }
+        .btn-custom {
+            background: linear-gradient(45deg, #d4a017, #f8f1e9);
+            color: #1a2a44;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-custom:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(212, 160, 23, 0.5);
+        }
+        .btn-custom::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        .btn-custom:hover::after {
+            width: 200px;
+            height: 200px;
+        }
+        .features-section {
+            padding: 100px 0;
+            background: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31') no-repeat center/cover;
+            background-attachment: fixed;
+            position: relative;
+        }
+        .features-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 42, 68, 0.8);
+            z-index: 1;
+        }
+        .features-content {
+            position: relative;
+            z-index: 2;
+        }
+        .feature-card {
+            background: rgba(248, 241, 233, 0.1);
+            border: 1px solid #d4a017;
+            border-radius: 20px;
+            padding: 30px;
+            transition: transform 0.5s, box-shadow 0.5s;
+            backdrop-filter: blur(10px);
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-15px) rotateY(10deg);
+            box-shadow: 0 15px 30px rgba(212, 160, 23, 0.4);
+        }
+        .chat-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            background: rgba(26, 42, 68, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .chat-box.active {
+            display: block;
+        }
+        .chat-header {
+            background: #d4a017;
+            color: #1a2a44;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-body {
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            color: #f8f1e9;
+        }
+        .chat-input {
+            display: flex;
+            padding: 15px;
+        }
+        .chat-input input {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(248, 241, 233, 0.2);
+            color: #f8f1e9;
+        }
+        .chat-input button {
+            background: #d4a017;
+            color: #1a2a44;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2a9d8f;
+            color: #f8f1e9;
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 2000;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        .notification.active {
+            display: block;
+        }
+        #globeCanvas {
+            width: 100%;
+            height: 500px;
+            margin: 50px 0;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #d4a017, 0 0 20px #d4a017; }
+            to { text-shadow: 0 0 20px #d4a017, 0 0 30px #d4a017; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            .chat-box {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Devantra Community</h1>
+            <p>Experience Mohali’s Most Vibrant & Luxurious Community Hub</p>
+            <a href="#join" class="btn btn-custom">Join the Future</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="features-content container">
+            <h2 class="text-center mb-5">Discover the Devantra Experience</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card text-center">
+                        <h3>Interactive Forums</h3>
+                        <p>Engage in dynamic discussions with real-time upvoting and AI-curated threads.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card text-center">
+                        <h3>Live Events & Streams</h3>
+                        <p>Join immersive virtual and hybrid events with seamless streaming.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card text-center">
+                        <h3>Gamified Rewards</h3>
+                        <p>Earn exclusive badges and climb leaderboards with every interaction.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- 3D Globe -->
+            <div id="globeCanvas"></div>
+        </div>
+    </section>
+
+    <!-- Chat Box -->
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">
+            <span>Live Community Chat</span>
+            <button onclick="toggleChat()">X</button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <!-- Chat messages will be dynamically added here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <!-- Notification Pop-up -->
+    <div class="notification" id="notification">
+        New event added: Mohali Cultural Fest 2025!
+    </div>
+
+    <!-- Bootstrap JS, Three.js, GSAP, and Custom Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle Chat
+        function toggleChat() {
+            const chatBox = document.getElementById('chatBox');
+            chatBox.classList.toggle('active');
+        }
+
+        // Send Message
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const chatBody = document.getElementById('chatBody');
+            if (input.value.trim()) {
+                const message = document.createElement('div');
+                message.textContent = input.value;
+                message.style.padding = '10px';
+                message.style.borderBottom = '1px solid rgba(248, 241, 233, 0.2)';
+                chatBody.appendChild(message);
+                input.value = '';
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+        }
+
+        // Real-Time Notifications
+        document.addEventListener('DOMContentLoaded', () => {
+            const notification = document.getElementById('notification');
+            const messages = [
+                'New event added: Mohali Cultural Fest 2025!',
+                'Join our live Q&A session tonight!',
+                'New post in the forum: Share your ideas!'
+            ];
+            let index = 0;
+            setInterval(() => {
+                notification.textContent = messages[index];
+                notification.classList.add('active');
+                setTimeout(() => notification.classList.remove('active'), 3000);
+                index = (index + 1) % messages.length;
+            }, 10000);
+        });
+
+        // AI-Powered Suggestions
+        setInterval(() => {
+            const suggestions = [
+                'Explore our upcoming tech workshop!',
+                'Connect with local innovators!',
+                'Join the cultural discussion thread!'
+            ];
+            const chatBody = document.getElementById('chatBody');
+            const suggestion = document.createElement('div');
+            suggestion.textContent = 'AI: ' + suggestions[Math.floor(Math.random() * suggestions.length)];
+            suggestion.style.color = '#d4a017';
+            suggestion.style.padding = '10px';
+            chatBody.appendChild(suggestion);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }, 15000);
+
+        // 3D Globe with Three.js
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 500, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('globeCanvas'), alpha: true });
+        renderer.setSize(window.innerWidth, 500);
+
+        const geometry = new THREE.SphereGeometry(5, 32, 32);
+        const material = new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg'),
+            wireframe: true
+        });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        camera.position.z = 15;
+
+        function animateGlobe() {
+            requestAnimationFrame(animateGlobe);
+            sphere.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animateGlobe();
+
+        // GSAP Animations
+        gsap.from('.feature-card', {
+            duration: 1,
+            y: 100,
+            opacity: 0,
+            stagger: 0.2,
+            ease: 'power2.out'
+        });
+
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const featuresSection = document.querySelector('.features-section');
+            const scrollPosition = window.scrollY;
+            featuresSection.style.backgroundPositionY = -(scrollPosition * 0.5) + 'px';
+        });
+    </script>
+</body>
+</html>
